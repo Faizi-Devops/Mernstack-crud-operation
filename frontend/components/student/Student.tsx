@@ -17,7 +17,9 @@ const Student = () => {
     const [naming,setNaming]=useState<string>("")
     const [classing,setClassing]=useState<string>("");
     const [batching,setBatching]=useState<string>("");
-    const [yearing,setYearing]=useState<number>(0)
+    const [yearing,setYearing]=useState<number>();
+    const [ideing,setIdeing]=useState<string>("")
+    const [flag,setFlag]=useState<Boolean>(false)
 
 
 
@@ -119,8 +121,40 @@ const Student = () => {
 
 
     }
-    const onEditHandler = () =>{
+    const onEditHandler = (valueing:B) =>{
+        setNaming(valueing.name)
+        setClassing(valueing.class)
+        setBatching(valueing.batch)
+        setYearing(valueing.year)
+        setIdeing(valueing._id)
+        setFlag(true)
 
+
+    }
+    const onUpdateHandler = () =>{
+        setFlag(false)
+        if(naming && classing && yearing && batching){
+            let updated = {
+                name:naming,
+                class:classing,
+                batch:batching,
+                year:yearing
+            }
+            let full = data.map((value,index)=>{
+                if(ideing === value._id){
+                    return updated
+                }
+                else{
+                    return value
+                }
+
+            })
+
+        }
+        else{
+            toast.error("Please fill all the params")
+        }
+        
     }
     return (
         <div>
@@ -130,19 +164,22 @@ const Student = () => {
                     <div className="card-body">
                         <h5 className="card-title text-center">Student Crud</h5>
                         <div className="mb-3 mt-3">
-                            <input type="email" className="form-control" placeholder="Name" onChange={alpha}/>
+                            <input type="email"  value={naming} className="form-control" placeholder="Name" onChange={alpha}/>
                         </div>
                         <div className="mb-3 mt-3">
-                            <input type="email" className="form-control" placeholder="Class" onChange={beta} />
+                            <input type="email" value={classing} className="form-control" placeholder="Class" onChange={beta} />
                         </div>
                         <div className="mb-3 mt-3">
-                            <input type="email" className="form-control" placeholder="Batch" onChange={gema}/>
+                            <input type="email" value={batching} className="form-control" placeholder="Batch" onChange={gema}/>
                         </div>
                         <div className="mb-3 mt-3">
-                            <input type="email" className="form-control" placeholder="year" onChange={peta}/>
+                            <input type="email" value={yearing} className="form-control" placeholder="year" onChange={peta}/>
                         </div>
                         <div className="text-center">
-                            <Button value="Add Student" color="btn btn-outline-success" clickHandler={onAddHandler} />
+                            {
+                                flag ?<Button value="Update Student" color="btn btn-outline-warning" clickHandler={onUpdateHandler} />:
+                            
+                            <Button value="Add Student" color="btn btn-outline-success" clickHandler={onAddHandler} />}
 
                         </div>
                         
@@ -180,7 +217,7 @@ const Student = () => {
                                         <Button value="Delete" color="btn btn-outline-danger" clickHandler={()=>onDeleteHandler(value._id)}/>
                                     </td>
                                     <td>
-                                        <Button value="Update" color="btn btn-outline-primary" clickHandler={onEditHandler}/>
+                                        <Button value="Update" color="btn btn-outline-primary" clickHandler={()=>onEditHandler(value)}/>
                                     </td>
                                 </tr>
 
