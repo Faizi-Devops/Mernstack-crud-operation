@@ -45,10 +45,6 @@ const Student = () => {
     }
 
 
-
-
-
-
     const getUsers = async () => {
         try {
             const response = await axios.get("http://localhost:4000/users");
@@ -131,25 +127,57 @@ const Student = () => {
 
 
     }
-    const onUpdateHandler = () =>{
+    const onUpdateHandler = async() =>{
         setFlag(false)
         if(naming && classing && yearing && batching){
-            let updated = {
-                name:naming,
-                class:classing,
-                batch:batching,
-                year:yearing
-            }
-            let full = data.map((value,index)=>{
-                if(ideing === value._id){
-                    return updated
-                }
-                else{
-                    return value
-                }
 
-            })
+            
+                let updated = {
+                    name:naming,
+                    class:classing,
+                    batch:batching,
+                    year:yearing
+                }
+                try {
+                    const response = await axios.patch(`http://localhost:4000/users/${ideing}`, updated);
+                    console.log(ideing);
+                    
+                    
+                } catch (error) {
+                    console.log(error);
+                    
+                    
+                }
+                let full = data.map((value,index)=>{
+                    if(ideing === value._id){
+                        return updated
+                    }
+                    else{
+                        return value
+                    }
+    
+                })
+                setData([...full])
+                setBatching("")
+                setClassing("")
+                setNaming("")
+                setYearing("")
+                // try {
+                //     const response = await axios.patch(`http://localhost:4000/users/${ideing}`, updated);
+                //     setData([...full])
+                //     setBatching("")
+                //     setClassing("")
+                //     setNaming("")
+                //     setYearing("")
+                //   } catch (error) {
+                //     console.log(error);
+                //   }
 
+               
+                
+                
+           
+           
         }
         else{
             toast.error("Please fill all the params")
